@@ -1,6 +1,8 @@
-# Eventhandler Toolbox
+# Eventhandler Toolbox - Do NOT use
 
 Eventhandler toolbox
+
+HIGHLY UNSTABLE - DO NOT USE (yet) !
 
 ## Table of Contents
 
@@ -15,11 +17,10 @@ Eventhandler toolbox
 
 To add the toolbox to a project, you add the package to the project.json :
 
-``` json 
+``` json
 "dependencies": {
     "Digipolis.Toolbox.Eventhandler":  "1.0.0"
  }
-``` 
+```
 
 In Visual Studio you can also use the NuGet Package Manager to do this.
-
