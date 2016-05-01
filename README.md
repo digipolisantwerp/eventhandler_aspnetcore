@@ -2,7 +2,7 @@
 
 Eventhandler toolbox
 
-HIGHLY UNSTABLE - DO NOT USE (yet) !
+Under construction and HIGHLY UNSTABLE - DO NOT USE (yet) !
 
 ## Table of Contents
 
