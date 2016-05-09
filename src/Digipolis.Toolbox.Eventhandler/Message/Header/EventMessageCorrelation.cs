@@ -6,8 +6,12 @@ namespace Toolbox.Eventhandler.Message
 {
     public class EventMessageCorrelation
     {
-        public EventMessageCorrelation()
-        {           
+        
+        public EventMessageCorrelation(string applicationId = null, string applicationName = null, string instanceId = null, string instanceName = null, string correlationId = null)
+        {
+            Application = new EventMessageApplication(applicationId, applicationName);
+            Instance = new EventMessageInstance(instanceId, instanceName);
+            CorrelationId = correlationId;
         }
 
         [MinLength(1)]
