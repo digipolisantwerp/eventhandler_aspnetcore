@@ -6,6 +6,16 @@ namespace Toolbox.Eventhandler.Message
 {
     public class EventMessageMessage
     {
+
+        public EventMessageMessage(string type, string content, string format = null)
+        {
+            Type = type;
+            Content = content;
+            Format = format;
+        }
+
+
+
         [MinLength(1)]
         [MaxLength(256)]
         [JsonProperty(Required = Required.Always)]

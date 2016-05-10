@@ -11,6 +11,8 @@ namespace Toolbox.Eventhandler.Options
             public const string MessageVersion = "1";
             public static string AppId = "AppId";
             public static string AppName = "AppName";
+            public static string InstanceId = "InstanceId";
+            public static string InstanceName = "InstanceName";
             public static string EventEndpointUrl = "Url";
         }
 

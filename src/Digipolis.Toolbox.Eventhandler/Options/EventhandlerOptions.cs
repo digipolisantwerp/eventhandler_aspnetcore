@@ -22,6 +22,18 @@ namespace Toolbox.Eventhandler
         /// </summary>
         public string AppName = Defaults.EventhandlerConfigKeys.AppName;
 
+
+        /// <summary>
+        /// The instance's id.
+        /// </summary>
+        public string InstanceId = Defaults.EventhandlerConfigKeys.InstanceId;
+
+        /// <summary>
+        /// The instance's name.
+        /// </summary>
+        public string InstanceName = Defaults.EventhandlerConfigKeys.InstanceName;
+
+
         /// <summary>
         /// The url of the Eventhandler HTTP endpoint.
         /// </summary>

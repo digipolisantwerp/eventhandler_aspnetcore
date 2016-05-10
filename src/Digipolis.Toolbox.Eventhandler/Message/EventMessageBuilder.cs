@@ -21,6 +21,7 @@ namespace Toolbox.Eventhandler.Message
             Options = options;
             ContextAccessor = contextAccessor;
             LocalIPAddress = GetLocalIPAddress();
+            HostIPAddress = GetHostIPAddress();
             CurrentProcess = GetCurrentProcessId();
             CurrentThread = GetCurrentThreadId();
         }
@@ -30,10 +31,12 @@ namespace Toolbox.Eventhandler.Message
         internal IHttpContextAccessor ContextAccessor { get; private set; }
 
         internal string LocalIPAddress { get; private set; }
+        internal string HostIPAddress { get; private set; }
         internal string CurrentProcess { get; private set; }
         internal string CurrentThread { get; private set; }
 
-        public EventMessage Build(string loggerName, LogLevel logLevel, object state, Exception exception, Func<object, Exception, string> formatter = null)
+
+        public EventMessage Build(object state, Exception exception, Func<object, Exception, string> formatter = null)
         {
             if (state == null && exception == null) return null;
 
@@ -43,41 +46,62 @@ namespace Toolbox.Eventhandler.Message
             //HEADER
             eventMessage.Header.TimeStamp = DateTime.Now;
 
-            eventMessage.Header.Host = new EventMessageHost(LocalIPAddress, CurrentProcess, CurrentThread);
+            eventMessage.Header.Host = new EventMessageHost(HostIPAddress, CurrentProcess, CurrentThread);
             eventMessage.Header.Correlation = BuildCorrelation();
 
+            eventMessage.Header.Source = new EventMessageSource(Options.AppId,
+                                                   Options.AppName,
+                                                   Options.InstanceId,
+                                                   Options.InstanceName,
+                                                   "ComponentID",
+                                                   "ComponentName"); //TODO
 
 
-            string message;
-            if (formatter != null)
-                message = formatter(state, exception);
-            else
-                message = Microsoft.Extensions.Logging.LogFormatter.Formatter(state, exception);
 
-            if (!string.IsNullOrEmpty(message))
-            {
+            //BODY
+
+            eventMessage.Body.MessageVersion = Options.MessageVersion; //TODO
+
+            eventMessage.Body.User = new EventMessageUser() { UserName = ContextAccessor.HttpContext.User.Identity.Name, IPAddress = LocalIPAddress };
+
+            eventMessage.Body.Message = new EventMessageMessage("typefromparameter", "contentfromparameter", "formatfromparameter"); //TODO
+
+            
+
+            //string message;
+            //if (formatter != null)
+            //    message = formatter(state, exception);
+            //else
+            //    message = Microsoft.Extensions.Logging.LogFormatter.Formatter(state, exception);
+
+            //if (!string.IsNullOrEmpty(message))
+            //{
                 
-                eventMessage.Header.Source = new EventMessageSource(Options.AppId, loggerName);
-                eventMessage.Header.VersionNumber = Defaults.Message.HeaderVersion;
+            //    ventMessage.Header.VersionNumber = Defaults.Message.HeaderVersion;
 
-                //logMessage.Body.User = new EventMessageUser() { UserId = Thread.CurrentPrincipal?.Identity?.Name, IPAddress = LocalIPAddress };       // ToDo (SVB) : where does user's ip address come from?
-                eventMessage.Body.User = new EventMessageUser() { UserId = "ss", IPAddress = LocalIPAddress };
-                eventMessage.Body.VersionNumber = Options.MessageVersion;
-                eventMessage.Body.Content = message;
-                //logMessage.Body.Content = Serialize(state);     // ??
+            //    //logMessage.Body.User = new EventMessageUser() { UserId = Thread.CurrentPrincipal?.Identity?.Name, IPAddress = LocalIPAddress };       // ToDo (SVB) : where does user's ip address come from?
+            //    eventMessage.Body.User = new EventMessageUser() { UserId = "ss", IPAddress = LocalIPAddress };
+            //    eventMessage.Body.VersionNumber = Options.MessageVersion;
+            //    eventMessage.Body.Content = message;
+            //    //logMessage.Body.Content = Serialize(state);     // ??
 
-            }
+           // }
 
             return eventMessage;
         }
 
+                
 
 
         private EventMessageCorrelation BuildCorrelation()
         {
             var correlationContext = ServiceProvider.GetService(typeof(ICorrelationContext)) as ICorrelationContext;
             if (correlationContext != null)
-                return new EventMessageCorrelation(correlationContext.CorrelationSource, correlationContext.CorrelationId);
+                return new EventMessageCorrelation(correlationContext.SourceId,
+                                                   correlationContext.SourceName,
+                                                   correlationContext.InstanceId,
+                                                   correlationContext.InstanceName,
+                                                   correlationContext.Id);
             else
                 return new EventMessageCorrelation(Options.AppId, 
                                                    Options.AppName,
@@ -88,24 +112,18 @@ namespace Toolbox.Eventhandler.Message
         }
 
 
+        //TODO
         private string GetLocalIPAddress()
         {
- ContextAccessor.HttpContext.Request.Host...Current.Request.UserHostAddress;
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            return "unable to determine local IP Address.";
+            return ContextAccessor.HttpContext?.Request?.HttpContext?.Connection?.RemoteIpAddress?.ToString();
         }
+
+
+        //TODO
 
         private string GetHostIPAddress()
         {
-            var host = Dns.GetHostEntry(Dns.get.GetHostName());
+            var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
@@ -126,6 +144,8 @@ namespace Toolbox.Eventhandler.Message
         {
             return Thread.CurrentThread.ManagedThreadId.ToString();
         }
+
+
 
     }
 }

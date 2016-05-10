@@ -14,7 +14,7 @@
     "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final",
     "Newtonsoft.Json.Schema": "2.0.2",
     "System.ComponentModel.Annotations": "4.0.11-beta-23516",
-    "Toolbox.Correlation": "1.0.0",
+    "Toolbox.Correlation": "1.1.0",
     "Newtonsoft.Json": "8.0.2",
     "Microsoft.Extensions.Configuration.Json": "1.0.0-rc2-16100"
   },
