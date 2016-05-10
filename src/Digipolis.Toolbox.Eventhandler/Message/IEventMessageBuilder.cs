@@ -7,7 +7,7 @@ namespace Toolbox.Eventhandler.Message
     {
 
 
-        EventMessage Build(string MessageVersion, string MessageContent, string MessageFormat = null);
+        EventMessage Build(string MessageType, String MessageContent, string MessageFormat = null, string ComponentID = null, string ComponentName = null);
 
        
 

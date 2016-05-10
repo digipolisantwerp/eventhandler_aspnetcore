@@ -36,10 +36,9 @@ namespace Toolbox.Eventhandler.Message
         internal string CurrentThread { get; private set; }
 
 
-        public EventMessage Build(object state, Exception exception, Func<object, Exception, string> formatter = null)
+        public EventMessage Build(string MessageType, String MessageContent, string MessageFormat = null, string ComponentID = null, string ComponentName = null)
         {
-            if (state == null && exception == null) return null;
-
+           
            
             var eventMessage = new EventMessage();
 
@@ -53,18 +52,17 @@ namespace Toolbox.Eventhandler.Message
                                                    Options.AppName,
                                                    Options.InstanceId,
                                                    Options.InstanceName,
-                                                   "ComponentID",
-                                                   "ComponentName"); //TODO
-
+                                                   ComponentID,
+                                                   ComponentName);
 
 
             //BODY
 
-            eventMessage.Body.MessageVersion = Options.MessageVersion; //TODO
+            eventMessage.Body.MessageVersion = Options.MessageVersion; //TODO ???
 
             eventMessage.Body.User = new EventMessageUser() { UserName = ContextAccessor.HttpContext.User.Identity.Name, IPAddress = LocalIPAddress };
 
-            eventMessage.Body.Message = new EventMessageMessage("typefromparameter", "contentfromparameter", "formatfromparameter"); //TODO
+            eventMessage.Body.Message = new EventMessageMessage(MessageType, MessageContent, MessageFormat);
 
             
 
