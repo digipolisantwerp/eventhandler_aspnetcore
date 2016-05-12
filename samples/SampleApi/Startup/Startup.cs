@@ -43,7 +43,7 @@ namespace SampleApi
             services.AddBusinessServices();
             services.AddAutoMapper();
 
-            services.AddEventHandler(opt => opt.FileName = "_configs/eventhandlerconfig.json");
+            services.AddEventHandler(opt => opt.FileName = ConfigPath + "/eventhandlerconfig.json");
 
             services.AddSwaggerGen();
         }

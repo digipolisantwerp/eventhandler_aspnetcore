@@ -1,3 +1,4 @@
+using Digipolis.Toolbox.Eventhandler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SampleApi
@@ -6,8 +7,8 @@ namespace SampleApi
 	{
 		public static IServiceCollection AddBusinessServices(this IServiceCollection services)
 		{
-	       // Register your business services here, e.g. services.AddTransient<IMyService, MyService>();
-           
+            // Register your business services here, e.g. services.AddTransient<IMyService, MyService>();
+            services.AddTransient<IEventHandler, EventHandler>();
            return services;
 		}
 	}

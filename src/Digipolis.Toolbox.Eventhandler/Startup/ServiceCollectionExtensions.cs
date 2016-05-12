@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Toolbox.Eventhandler.Message;
 using Toolbox.Eventhandler.Options;
 
 namespace Toolbox.Eventhandler
@@ -27,7 +28,9 @@ namespace Toolbox.Eventhandler
             var options = new EventhandlerJsonFile();
             setupAction.Invoke(options);
             
-            ConfigureEventhandlerOptions(services, options);        
+            ConfigureEventhandlerOptions(services, options);
+
+            RegisterServices(services);
 
             return services;
         }
@@ -71,5 +74,15 @@ namespace Toolbox.Eventhandler
         {
             if ( field == null ) throw new ArgumentNullException(fieldName, $"{fieldName} cannot be null.");
         }
+
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddSingleton<IEventMessageBuilder, EventMessageBuilder>();
+            services.AddSingleton<EventhandlerOptions, EventhandlerOptions>();
+
+        }
+
+
     }
 }

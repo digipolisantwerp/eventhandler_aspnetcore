@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Toolbox.Eventhandler;
 using Toolbox.Eventhandler.Message;
 
 namespace Digipolis.Toolbox.Eventhandler
 {
     public class EventHandler: IEventHandler
     {
-        public EventHandler(IEventMessageBuilder eventMessageBuilder)
+        public EventHandler(IEventMessageBuilder eventMessageBuilder, EventhandlerOptions options)
         {
             if (eventMessageBuilder == null) throw new ArgumentNullException(nameof(eventMessageBuilder), $"{nameof(eventMessageBuilder)} cannot be null.");
             EventMessageBuilder = eventMessageBuilder;
+            EventhandlerOptions = options;
         }
 
         internal IEventMessageBuilder EventMessageBuilder { get; private set; }
+        internal EventhandlerOptions EventhandlerOptions { get; private set; }
 
 
         /// <summary>
@@ -68,10 +71,20 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
         public void PublishJson(string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
         {            
-            EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); //TODO USER ???
+            var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); //TODO USER ???
+
+            PublishToEndpoint(eventMessage);
         }
 
 
+
+
+        private void PublishToEndpoint(EventMessage eventmessage)
+        {
+            //TODO publish to URL
+            //EventhandlerOptions.EventEndpointUrl
+
+        }
 
 
 
