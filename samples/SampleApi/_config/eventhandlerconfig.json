@@ -1,0 +1,11 @@
+{
+  "EventHandler": {
+    "MessageVersion": "1",
+    "AppId": "666",
+    "AppName": "SampleApi",
+    "InstanceId": "123",
+    "InstanceName": "MySampleInstance",
+    "EventEndpointUrl": "http://www.underconstruction.local"
+  }
+}
+
