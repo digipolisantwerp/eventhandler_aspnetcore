@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.OptionsModel;
 using Newtonsoft.Json;
+using RestSharp;
 using Toolbox.Eventhandler;
 using Toolbox.Eventhandler.Message;
 
@@ -10,11 +12,11 @@ namespace Digipolis.Toolbox.Eventhandler
 {
     public class EventHandler: IEventHandler
     {
-        public EventHandler(IEventMessageBuilder eventMessageBuilder, EventhandlerOptions options)
+        public EventHandler(IEventMessageBuilder eventMessageBuilder, IOptions<EventhandlerOptions> options)
         {
             if (eventMessageBuilder == null) throw new ArgumentNullException(nameof(eventMessageBuilder), $"{nameof(eventMessageBuilder)} cannot be null.");
             EventMessageBuilder = eventMessageBuilder;
-            EventhandlerOptions = options;
+            EventhandlerOptions = options.Value;
         }
 
         internal IEventMessageBuilder EventMessageBuilder { get; private set; }
@@ -24,7 +26,6 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <summary>
         /// Publishes an EventMessage after serialising its content to Json
         /// </summary>
-        /// <typeparam name="T">The type of the EventMessage content</typeparam>
         /// <param name="eventType">The type of the event eg. invoice:created</param>
         /// <param name="eventContent">Content of the event as generic type</param>
         /// <param name="userName"></param>
@@ -32,13 +33,15 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
+        /// <param name="messagetopic">todo: describe messagetopic parameter on Publish</param>
+        /// <typeparam name="T">The type of the EventMessage content</typeparam>
 
-        public void Publish<T>(string eventType, T eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        public void Publish<T>(string messagetopic, string eventType, T eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
         {
             //Publish<DataType>(eventtype, datatype, [principal], [component])
             //De toolbox zal het datatype serializen naar json en deze als content doorsturen.
             var json = JsonConvert.SerializeObject(eventContent);  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(eventType, json, userName, userIP, componentId, componentName, eventFormat);
+            PublishJson(messagetopic, eventType, json, userName, userIP, componentId, componentName, eventFormat);
 
         }
 
@@ -52,11 +55,12 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
+        /// <param name="messagetopic">todo: describe messagetopic parameter on PublishString</param>
 
-        public void PublishString(string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        public void PublishString(string messagetopic, string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
         {
             var json = JsonConvert.SerializeObject(new { content = eventContent });  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(eventType, json, userName, userIP, componentId, componentName, eventFormat);
+            PublishJson(messagetopic, eventType, json, userName, userIP, componentId, componentName, eventFormat);
         }
 
         /// <summary>
@@ -69,20 +73,34 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
-        public void PublishJson(string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        /// <param name="messagetopic">todo: describe messagetopic parameter on PublishJson</param>
+        public void PublishJson(string messagetopic, string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
         {            
             var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); //TODO USER ???
 
-            PublishToEndpoint(eventMessage);
+            PublishToEndpoint(messagetopic, eventMessage);
         }
 
 
 
 
-        private void PublishToEndpoint(EventMessage eventmessage)
+        private void PublishToEndpoint(string messagetopic, EventMessage eventmessage)
         {
-            //TODO publish to URL
-            //EventhandlerOptions.EventEndpointUrl
+            //TODO: logica voor aanmaken topics??????????
+
+            var eventmessageJson = JsonConvert.SerializeObject(eventmessage);
+
+
+            var client = new RestClient(EventhandlerOptions.EventEndpointUrl + EventhandlerOptions.EventEndpointNamespace + "/"+ messagetopic + "/publish");
+            var request = new RestRequest(Method.PUT);
+            request.AddHeader("apikey", EventhandlerOptions.EventEndpointApikey);
+            request.AddHeader("owner-key", EventhandlerOptions.EventEndpointOwnerkey);
+            request.JsonSerializer.ContentType = "application/json; charset=utf-8";
+            request.AddParameter("application/json", eventmessageJson, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+
+            // TODO: wat bij fout???
 
         }
 

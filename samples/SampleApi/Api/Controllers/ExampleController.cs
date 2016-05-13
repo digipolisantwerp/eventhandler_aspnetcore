@@ -39,7 +39,7 @@ namespace SampleApi.Api.Controllers
         {
 
             //Publish an Event passing an entire object
-            EventHandler.Publish<List<Example>>("examples:requested", _examples , "Myname", "MyIp", "666", "ExampleController");
+            EventHandler.Publish<List<Example>>("CUD", "examples:requested", _examples , "Myname", "MyIp", "666", "ExampleController");
 
                       
 
@@ -56,7 +56,7 @@ namespace SampleApi.Api.Controllers
             if ( example == null )
             {
                 //Publish an Event passing a string message
-                EventHandler.PublishString("examples:notfound", "Example {id} not found", "Myname", "MyIp", "666", "ExampleController");
+                EventHandler.PublishString("CUD","examples:notfound", "Example {id} not found", "Myname", "MyIp", "666", "ExampleController");
                                
 
                 // this will return a HTTP Status Code 404 (Not Found) along with the message
@@ -66,7 +66,7 @@ namespace SampleApi.Api.Controllers
             {
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(example);
                 //Publish an Event passing a json string
-                EventHandler.PublishJson("examples:found", json, "Myname", "MyIp", "666", "ExampleController");
+                EventHandler.PublishJson("CUD", "examples:found", json, "Myname", "MyIp", "666", "ExampleController");
                
             }
 

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
 using Toolbox.Correlation;
 using Toolbox.Eventhandler.Options;
 
@@ -12,13 +13,13 @@ namespace Toolbox.Eventhandler.Message
 {
     public class EventMessageBuilder : IEventMessageBuilder
     {
-        public EventMessageBuilder(IServiceProvider serviceProvider, EventhandlerOptions options, IHttpContextAccessor contextAccessor)
+        public EventMessageBuilder(IServiceProvider serviceProvider, IOptions<EventhandlerOptions> options, IHttpContextAccessor contextAccessor)
         {
             if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider), $"{nameof(serviceProvider)} cannot be null.");
             if (options == null) throw new ArgumentNullException(nameof(options), $"{nameof(options)} cannot be null.");
             if (contextAccessor == null) throw new ArgumentNullException(nameof(contextAccessor), $"{nameof(contextAccessor)} cannot be null.");
             ServiceProvider = serviceProvider;
-            Options = options;
+            Options = options.Value;
             ContextAccessor = contextAccessor;
             LocalIPAddress = GetLocalIPAddress();
             HostIPAddress = GetHostIPAddress();
@@ -55,6 +56,7 @@ namespace Toolbox.Eventhandler.Message
                                                    ComponentID,
                                                    ComponentName);
 
+            eventMessage.Header.Version = Options.MessageVersion; //???
 
             //BODY
 

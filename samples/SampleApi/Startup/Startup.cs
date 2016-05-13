@@ -39,11 +39,13 @@ namespace SampleApi
             services.AddMvc()
                 .AddActionOverloading()
                 .AddVersioning();
-            
+
+            services.AddEventHandler(opt => opt.FileName = ConfigPath + "/eventhandlerconfig.json");
+
             services.AddBusinessServices();
             services.AddAutoMapper();
 
-            services.AddEventHandler(opt => opt.FileName = ConfigPath + "/eventhandlerconfig.json");
+            //services.AddEventHandler(opt => opt.FileName = ConfigPath + "/eventhandlerconfig.json");
 
             services.AddSwaggerGen();
         }

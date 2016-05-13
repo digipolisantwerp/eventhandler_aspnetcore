@@ -18,6 +18,8 @@ namespace Toolbox.Eventhandler
 
             ConfigureEventhandlerOptions(services, options);
 
+            RegisterServices(services);
+
             return services;
         }
 
@@ -41,6 +43,9 @@ namespace Toolbox.Eventhandler
             ValidateMandatoryField(options.AppId, nameof(options.AppId));
             ValidateMandatoryField(options.AppName, nameof(options.AppName));
             ValidateMandatoryField(options.EventEndpointUrl, nameof(options.EventEndpointUrl));
+            ValidateMandatoryField(options.EventEndpointNamespace, nameof(options.EventEndpointNamespace));
+            ValidateMandatoryField(options.EventEndpointApikey, nameof(options.EventEndpointApikey));
+            ValidateMandatoryField(options.EventEndpointOwnerkey, nameof(options.EventEndpointOwnerkey));
             ValidateMandatoryField(options.MessageVersion, nameof(options.MessageVersion));
 
             services.Configure<EventhandlerOptions>(opt =>
@@ -48,6 +53,9 @@ namespace Toolbox.Eventhandler
                 opt.AppId = options.AppId;
                 opt.AppName = options.AppName;
                 opt.EventEndpointUrl = options.EventEndpointUrl;
+                opt.EventEndpointNamespace = options.EventEndpointNamespace;
+                opt.EventEndpointApikey = options.EventEndpointApikey;
+                opt.EventEndpointOwnerkey = options.EventEndpointOwnerkey;
                 opt.MessageVersion = options.MessageVersion;
             });
         }
@@ -79,7 +87,7 @@ namespace Toolbox.Eventhandler
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IEventMessageBuilder, EventMessageBuilder>();
-            services.AddSingleton<EventhandlerOptions, EventhandlerOptions>();
+            //services.AddSingleton<EventhandlerOptions, EventhandlerOptions>();
 
         }
 

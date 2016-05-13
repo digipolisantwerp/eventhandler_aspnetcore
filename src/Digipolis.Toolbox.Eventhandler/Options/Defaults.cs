@@ -14,6 +14,10 @@ namespace Toolbox.Eventhandler.Options
             public static string InstanceId = "InstanceId";
             public static string InstanceName = "InstanceName";
             public static string EventEndpointUrl = "Url";
+            public static string EventEndpointNamespace = "myNamespace";
+            public static string EventEndpointApikey = "666-666-666-666-666";
+            public static string EventEndpointOwnerkey = "666-666-666-666-666";
+            
         }
 
         //public static class HttpLogger
