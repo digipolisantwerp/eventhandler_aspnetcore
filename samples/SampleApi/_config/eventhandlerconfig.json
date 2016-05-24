@@ -1,6 +1,7 @@
 {
   "EventHandler": {
     "MessageVersion": "1",
+    "Version": "1",
     "AppId": "666",
     "AppName": "SampleApi",
     "InstanceId": "123",
