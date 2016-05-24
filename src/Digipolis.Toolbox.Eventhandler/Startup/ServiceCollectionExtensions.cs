@@ -47,6 +47,7 @@ namespace Toolbox.Eventhandler
             ValidateMandatoryField(options.EventEndpointApikey, nameof(options.EventEndpointApikey));
             ValidateMandatoryField(options.EventEndpointOwnerkey, nameof(options.EventEndpointOwnerkey));
             ValidateMandatoryField(options.MessageVersion, nameof(options.MessageVersion));
+            ValidateMandatoryField(options.Version, nameof(options.Version));
 
             services.Configure<EventhandlerOptions>(opt =>
             {
@@ -57,6 +58,7 @@ namespace Toolbox.Eventhandler
                 opt.EventEndpointApikey = options.EventEndpointApikey;
                 opt.EventEndpointOwnerkey = options.EventEndpointOwnerkey;
                 opt.MessageVersion = options.MessageVersion;
+                opt.Version = options.Version;
             });
         }
 

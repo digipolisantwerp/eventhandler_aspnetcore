@@ -13,6 +13,11 @@ namespace Toolbox.Eventhandler
         public string MessageVersion { get; set; } = Defaults.EventhandlerConfigKeys.MessageVersion;
 
         /// <summary>
+        /// The version of the event handler. You can use this field when parsing the message in Eventhandler.
+        /// </summary>
+        public string Version { get; set; } = Defaults.EventhandlerConfigKeys.Version;
+
+        /// <summary>
         /// The application's id.
         /// </summary>
         public string AppId { get; set; } = Defaults.EventhandlerConfigKeys.AppId;

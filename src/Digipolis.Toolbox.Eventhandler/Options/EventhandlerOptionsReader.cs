@@ -16,6 +16,7 @@ namespace Toolbox.Eventhandler.Options
                 AppName = config.Get<string>(Defaults.EventhandlerConfigKeys.AppName),
                 EventEndpointUrl = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointUrl),
                 MessageVersion = config.Get<string>(Defaults.EventhandlerConfigKeys.MessageVersion),
+                Version = config.Get<string>(Defaults.EventhandlerConfigKeys.Version),
                 EventEndpointNamespace = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointNamespace),
                 EventEndpointApikey = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointApikey),
                 EventEndpointOwnerkey = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointOwnerkey)
@@ -48,8 +49,9 @@ namespace Toolbox.Eventhandler.Options
             if (String.IsNullOrWhiteSpace(options.EventEndpointApikey)) throw new InvalidOptionException(Defaults.EventhandlerConfigKeys.EventEndpointApikey, options.AppId, "Eventhandler endpoint apikey is mandatory.");
             if (String.IsNullOrWhiteSpace(options.EventEndpointOwnerkey)) throw new InvalidOptionException(Defaults.EventhandlerConfigKeys.EventEndpointOwnerkey, options.AppId, "Eventhandler endpoint ownerkey is mandatory.");
             if (String.IsNullOrWhiteSpace(options.MessageVersion)) throw new InvalidOptionException(Defaults.EventhandlerConfigKeys.MessageVersion, options.AppId, "Eventhandler Messageversion is mandatory.");
+            if (String.IsNullOrWhiteSpace(options.Version)) throw new InvalidOptionException(Defaults.EventhandlerConfigKeys.Version, options.AppId, "Eventhandler version is mandatory.");
 
-            
+
             try
             {
                 var uri = new Uri(options.EventEndpointUrl);

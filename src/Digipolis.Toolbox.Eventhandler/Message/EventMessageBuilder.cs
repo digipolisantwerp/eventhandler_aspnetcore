@@ -53,39 +53,19 @@ namespace Toolbox.Eventhandler.Message
                                                    Options.AppName,
                                                    Options.InstanceId,
                                                    Options.InstanceName,
-                                                   ComponentID,
-                                                   ComponentName);
+                                                   ComponentID ?? Options.AppId,
+                                                   ComponentName?? Options.AppName);
 
-            eventMessage.Header.Version = Options.MessageVersion; //???
+            eventMessage.Header.Version = Options.Version;
 
             //BODY
 
-            eventMessage.Body.MessageVersion = Options.MessageVersion; //TODO ???
+            eventMessage.Body.MessageVersion = Options.MessageVersion;
 
-            eventMessage.Body.User = new EventMessageUser() { UserName = ContextAccessor.HttpContext.User.Identity.Name, IPAddress = LocalIPAddress };
+            eventMessage.Body.User = new EventMessageUser { UserName = ContextAccessor.HttpContext?.User?.Identity?.Name, IPAddress = LocalIPAddress };
 
             eventMessage.Body.Message = new EventMessageMessage(MessageType, MessageContent, MessageFormat);
 
-            
-
-            //string message;
-            //if (formatter != null)
-            //    message = formatter(state, exception);
-            //else
-            //    message = Microsoft.Extensions.Logging.LogFormatter.Formatter(state, exception);
-
-            //if (!string.IsNullOrEmpty(message))
-            //{
-                
-            //    ventMessage.Header.VersionNumber = Defaults.Message.HeaderVersion;
-
-            //    //logMessage.Body.User = new EventMessageUser() { UserId = Thread.CurrentPrincipal?.Identity?.Name, IPAddress = LocalIPAddress };       // ToDo (SVB) : where does user's ip address come from?
-            //    eventMessage.Body.User = new EventMessageUser() { UserId = "ss", IPAddress = LocalIPAddress };
-            //    eventMessage.Body.VersionNumber = Options.MessageVersion;
-            //    eventMessage.Body.Content = message;
-            //    //logMessage.Body.Content = Serialize(state);     // ??
-
-           // }
 
             return eventMessage;
         }

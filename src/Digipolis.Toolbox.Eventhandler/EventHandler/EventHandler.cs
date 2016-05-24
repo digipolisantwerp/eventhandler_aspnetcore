@@ -28,20 +28,18 @@ namespace Digipolis.Toolbox.Eventhandler
         /// </summary>
         /// <param name="eventType">The type of the event eg. invoice:created</param>
         /// <param name="eventContent">Content of the event as generic type</param>
-        /// <param name="userName"></param>
-        /// <param name="userIP"></param>
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
         /// <param name="messagetopic">todo: describe messagetopic parameter on Publish</param>
         /// <typeparam name="T">The type of the EventMessage content</typeparam>
 
-        public void Publish<T>(string messagetopic, string eventType, T eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        public void Publish<T>(string messagetopic, string eventType, T eventContent, string componentId, string componentName, string eventFormat = null)
         {
             //Publish<DataType>(eventtype, datatype, [principal], [component])
             //De toolbox zal het datatype serializen naar json en deze als content doorsturen.
             var json = JsonConvert.SerializeObject(eventContent);  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(messagetopic, eventType, json, userName, userIP, componentId, componentName, eventFormat);
+            PublishJson(messagetopic, eventType, json, componentId, componentName, eventFormat);
 
         }
 
@@ -50,17 +48,15 @@ namespace Digipolis.Toolbox.Eventhandler
         /// </summary>
         /// <param name="eventType">The type of the event eg. invoice:created</param>
         /// <param name="eventContent">String content of the event</param>
-        /// <param name="userName"></param>
-        /// <param name="userIP"></param>
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
         /// <param name="messagetopic">todo: describe messagetopic parameter on PublishString</param>
 
-        public void PublishString(string messagetopic, string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        public void PublishString(string messagetopic, string eventType, string eventContent, string componentId, string componentName, string eventFormat = null)
         {
             var json = JsonConvert.SerializeObject(new { content = eventContent });  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(messagetopic, eventType, json, userName, userIP, componentId, componentName, eventFormat);
+            PublishJson(messagetopic, eventType, json, componentId, componentName, eventFormat);
         }
 
         /// <summary>
@@ -68,15 +64,13 @@ namespace Digipolis.Toolbox.Eventhandler
         /// </summary>
         /// <param name="eventType">The type of the event eg. invoice:created</param>
         /// <param name="eventContent">JSon content of the event</param>
-        /// <param name="userName"></param>
-        /// <param name="userIP"></param>
         /// <param name="componentId">Unique identifier of the component in the application that publishes the event.</param>
         /// <param name="componentName">Display-name of the component in the application that publishes the event.</param>
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
         /// <param name="messagetopic">todo: describe messagetopic parameter on PublishJson</param>
-        public void PublishJson(string messagetopic, string eventType, string eventContent, string userName, string userIP, string componentId, string componentName, string eventFormat = null)
+        public void PublishJson(string messagetopic, string eventType, string eventContent, string componentId, string componentName, string eventFormat = null)
         {            
-            var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); //TODO USER ???
+            var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); 
 
             PublishToEndpoint(messagetopic, eventMessage);
         }

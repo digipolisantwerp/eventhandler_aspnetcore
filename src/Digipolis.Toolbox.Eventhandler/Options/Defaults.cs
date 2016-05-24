@@ -9,6 +9,7 @@ namespace Toolbox.Eventhandler.Options
         public static class EventhandlerConfigKeys
         {
             public const string MessageVersion = "1";
+            public const string Version = "1";
             public static string AppId = "AppId";
             public static string AppName = "AppName";
             public static string InstanceId = "InstanceId";
