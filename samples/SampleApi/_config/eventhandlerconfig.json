@@ -1,7 +1,6 @@
-{
   "EventHandler": {
-    "MessageVersion": "1",
     "Version": "1",
+    "MessageVersion": "1",
     "AppId": "666",
     "AppName": "SampleApi",
     "InstanceId": "123",
@@ -9,6 +8,8 @@
     "EventEndpointUrl": "https://myendpoint.com",
     "EventEndpointNamespace": "EventNamespace",
     "EventEndpointApikey": "6546-6544-6464-6654",
-    "EventEndpointOwnerkey": "dgpls"
+    "EventEndpointOwnerkey": "dgpls",
+    "HideEventHandlerErrors": "True"
+
   }
 }

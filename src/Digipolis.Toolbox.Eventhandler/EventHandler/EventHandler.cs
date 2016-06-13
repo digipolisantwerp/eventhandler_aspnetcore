@@ -10,7 +10,7 @@ using Toolbox.Eventhandler.Message;
 
 namespace Digipolis.Toolbox.Eventhandler
 {
-    public class EventHandler: IEventHandler
+    public class EventHandler : IEventHandler
     {
         public EventHandler(IEventMessageBuilder eventMessageBuilder, IOptions<EventhandlerOptions> options)
         {
@@ -69,32 +69,50 @@ namespace Digipolis.Toolbox.Eventhandler
         /// <param name="eventFormat">Format of the content (can be used by parsers).</param>
         /// <param name="messagetopic">todo: describe messagetopic parameter on PublishJson</param>
         public void PublishJson(string messagetopic, string eventType, string eventContent, string componentId, string componentName, string eventFormat = null)
-        {            
-            var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName); 
+        {
+            try
+            {
+                var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName);
 
-            PublishToEndpoint(messagetopic, eventMessage);
+                PublishToEndpoint(messagetopic, eventMessage);
+
+            }
+            catch (Exception)
+            {
+                if (!EventhandlerOptions.HideEventHandlerErrors)
+                {
+                    throw;
+                }
+            }
+
         }
-
-
 
 
         private void PublishToEndpoint(string messagetopic, EventMessage eventmessage)
         {
-            //TODO: logica voor aanmaken topics??????????
-
-            var eventmessageJson = JsonConvert.SerializeObject(eventmessage);
-
-
-            var client = new RestClient(EventhandlerOptions.EventEndpointUrl + EventhandlerOptions.EventEndpointNamespace + "/"+ messagetopic + "/publish");
-            var request = new RestRequest(Method.PUT);
-            request.AddHeader("apikey", EventhandlerOptions.EventEndpointApikey);
-            request.AddHeader("owner-key", EventhandlerOptions.EventEndpointOwnerkey);
-            request.JsonSerializer.ContentType = "application/json; charset=utf-8";
-            request.AddParameter("application/json", eventmessageJson, ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            //TODO: logic to create topics???
+            try
+            {
+                var eventmessageJson = JsonConvert.SerializeObject(eventmessage);
 
 
-            // TODO: wat bij fout???
+                var client = new RestClient(EventhandlerOptions.EventEndpointUrl + EventhandlerOptions.EventEndpointNamespace + "/" + messagetopic + "/publish");
+                var request = new RestRequest(Method.PUT);
+                request.AddHeader("apikey", EventhandlerOptions.EventEndpointApikey);
+                request.AddHeader("owner-key", EventhandlerOptions.EventEndpointOwnerkey);
+                request.JsonSerializer.ContentType = "application/json; charset=utf-8";
+                request.AddParameter("application/json", eventmessageJson, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+
+
+            }
+            catch (Exception)
+            {
+                if (!EventhandlerOptions.HideEventHandlerErrors)
+                {
+                    throw;
+                }
+            }
 
         }
 

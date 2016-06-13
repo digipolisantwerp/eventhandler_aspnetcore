@@ -57,6 +57,8 @@ namespace Toolbox.Eventhandler
 
         public string EventEndpointOwnerkey { get; set; } = Defaults.EventhandlerConfigKeys.EventEndpointOwnerkey;
 
+        public bool HideEventHandlerErrors { get; set; } = Defaults.EventhandlerConfigKeys.HideEventHandlerErrors;
+
 
     }
 }

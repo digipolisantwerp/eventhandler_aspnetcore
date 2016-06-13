@@ -18,7 +18,8 @@ namespace Toolbox.Eventhandler.Options
             public static string EventEndpointNamespace = "myNamespace";
             public static string EventEndpointApikey = "666-666-666-666-666";
             public static string EventEndpointOwnerkey = "666-666-666-666-666";
-            
+            public static bool HideEventHandlerErrors = true;            
+
         }
 
         //public static class HttpLogger

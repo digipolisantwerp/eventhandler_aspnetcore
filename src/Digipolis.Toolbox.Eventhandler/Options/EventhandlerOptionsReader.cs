@@ -19,7 +19,8 @@ namespace Toolbox.Eventhandler.Options
                 Version = config.Get<string>(Defaults.EventhandlerConfigKeys.Version),
                 EventEndpointNamespace = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointNamespace),
                 EventEndpointApikey = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointApikey),
-                EventEndpointOwnerkey = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointOwnerkey)
+                EventEndpointOwnerkey = config.Get<string>(Defaults.EventhandlerConfigKeys.EventEndpointOwnerkey),
+                HideEventHandlerErrors = config.Get<bool>(Defaults.EventhandlerConfigKeys.HideEventHandlerErrors)
 
             };
 
