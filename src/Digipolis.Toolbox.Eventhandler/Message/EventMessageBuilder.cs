@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Digipolis.Toolbox.Eventhandler.Message;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Primitives;
 using Toolbox.Correlation;
+using Toolbox.Eventhandler.Message;
 using Toolbox.Eventhandler.Options;
 
 namespace Toolbox.Eventhandler.Message
@@ -95,9 +100,36 @@ namespace Toolbox.Eventhandler.Message
         //TODO
         private string GetLocalIPAddress()
         {
-            return ContextAccessor.HttpContext?.Request?.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+            return GetRequestIP();
+            //return ContextAccessor.HttpContext?.Request?.HttpContext?.Connection?.RemoteIpAddress?.ToString();
         }
 
+
+        public string GetRequestIP(bool tryUseXForwardHeader = true)
+        {
+            string ip = null;
+
+            // todo support new "Forwarded" header (2014) https://en.wikipedia.org/wiki/X-Forwarded-For
+
+            if (tryUseXForwardHeader)
+                ip = Helpers.SplitCsv(Helpers.GetHeaderValueAs<string>("X-Forwarded-For", ContextAccessor)).FirstOrDefault();
+
+            // RemoteIpAddress is always null in DNX RC1 Update1 (bug).
+            if (String.IsNullOrWhiteSpace(ip) && ContextAccessor.HttpContext?.Connection?.RemoteIpAddress != null)
+                ip = ContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            if (String.IsNullOrWhiteSpace(ip))
+                ip = Helpers.GetHeaderValueAs<string>("REMOTE_ADDR", ContextAccessor);
+
+            // _httpContextAccessor.HttpContext?.Request?.Host this is the local host.
+
+            //if (String.IsNullOrWhiteSpace(ip))
+            //    throw new Exception("Unable to determine caller's IP.");
+
+            return ip;
+        }
+
+     
 
         //TODO
 
