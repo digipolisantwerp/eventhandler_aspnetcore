@@ -1,4 +1,5 @@
- { "EventHandler": {
+{ 
+  "EventHandler": {
     "Version": "1",
     "MessageVersion": "1",
     "AppId": "666",
