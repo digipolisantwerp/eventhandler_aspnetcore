@@ -1,0 +1,7 @@
+{
+    "AppSettings": {
+        "AppName": "Api",
+        "DataDirectory": "/data/",
+        "TempDirectory": "/temp/"
+    }
+}
