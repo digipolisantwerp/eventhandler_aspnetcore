@@ -1,0 +1,17 @@
+﻿{
+  "version": "2.0.0-*",
+  "description": "Eventhandler Toolbox unit tests.",
+  "authors": [ "digipolis.be" ],
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "Digipolis.Eventhandler": "2.0.0",
+    "Moq": "4.6.25-alpha",
+    "xunit": "2.2.0-beta2-build3300",
+    "xunit.runner.dnx":  "2.1.0-rc1-build204"    
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
