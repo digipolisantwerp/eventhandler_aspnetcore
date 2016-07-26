@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 
 namespace Toolbox.Eventhandler.Message
 {
-    public class EventMessageMessage
+    public class EventMessageMessage<T> 
     {
 
-        public EventMessageMessage(string type, string content, string format = null)
+        public EventMessageMessage(string type, T content, string format = null)
         {
             Type = type;
             Content = content;
@@ -22,7 +22,7 @@ namespace Toolbox.Eventhandler.Message
         public string Type { get; set; }
 
         [JsonProperty(Required = Required.DisallowNull)]
-        public string Content { get; set; }
+        public T Content { get; set; }
 
         [MinLength(1)]
         [MaxLength(256)]

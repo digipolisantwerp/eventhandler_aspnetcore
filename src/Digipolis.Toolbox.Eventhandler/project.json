@@ -1,7 +1,7 @@
 {
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Eventhandler toolbox",
-	"authors": [ "Koen Stroobants" ],
+	"authors": [ "Koen Stroobants", "Valentijn Vanwynsberghe" ],
 	"tags": [ "" ],
 	"projectUrl": "",
 	"licenseUrl": "",
@@ -17,7 +17,7 @@
     "Toolbox.Correlation": "1.1.0",
     "Newtonsoft.Json": "8.0.2",
     "RestSharp": "105.2.3",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc2-16100"
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
   },
 	"frameworks": {
     "dnx451": {

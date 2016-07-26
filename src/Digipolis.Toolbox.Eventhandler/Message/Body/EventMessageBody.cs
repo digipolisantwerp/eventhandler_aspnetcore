@@ -5,7 +5,7 @@ using Toolbox.Eventhandler.Options;
 
 namespace Toolbox.Eventhandler.Message
 {
-    public class EventMessageBody
+    public class EventMessageBody<T>
     {
         public EventMessageBody()
         {
@@ -17,7 +17,7 @@ namespace Toolbox.Eventhandler.Message
 
                
         [JsonProperty(Required = Required.Always)]
-        public EventMessageMessage Message { get; set; }
+        public EventMessageMessage<T> Message { get; set; }
 
         [MinLength(1)]
         [MaxLength(32)]

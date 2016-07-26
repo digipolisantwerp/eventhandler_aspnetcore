@@ -64,9 +64,8 @@ namespace SampleApi.Api.Controllers
             }
             else
             {
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(example);
                 //Publish an Event passing a json string
-                EventHandler.PublishJson("CUD", "examples:found", json, "666", nameof(ExampleController));
+                EventHandler.Publish<Example>("CUD", "examples:found", example, "666", nameof(ExampleController));
                
             }
 
