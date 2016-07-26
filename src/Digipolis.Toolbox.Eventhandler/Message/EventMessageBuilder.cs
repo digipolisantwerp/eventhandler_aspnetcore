@@ -42,11 +42,11 @@ namespace Toolbox.Eventhandler.Message
         internal string CurrentThread { get; private set; }
 
 
-        public EventMessage Build(string MessageType, String MessageContent, string MessageFormat = null, string ComponentID = null, string ComponentName = null)
+        public EventMessage<T> Build<T>(string MessageType, T MessageContent, string MessageFormat = null, string ComponentID = null, string ComponentName = null)
         {
            
            
-            var eventMessage = new EventMessage();
+            var eventMessage = new EventMessage<T>();
 
             //HEADER
             eventMessage.Header.TimeStamp = DateTime.Now;
@@ -69,7 +69,7 @@ namespace Toolbox.Eventhandler.Message
 
             eventMessage.Body.User = new EventMessageUser { UserName = ContextAccessor.HttpContext?.User?.Identity?.Name, IPAddress = LocalIPAddress };
 
-            eventMessage.Body.Message = new EventMessageMessage(MessageType, MessageContent, MessageFormat);
+            eventMessage.Body.Message = new EventMessageMessage<T>(MessageType, MessageContent, MessageFormat);
 
 
             return eventMessage;

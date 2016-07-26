@@ -38,8 +38,7 @@ namespace Digipolis.Toolbox.Eventhandler
         {
             //Publish<DataType>(eventtype, datatype, [principal], [component])
             //De toolbox zal het datatype serializen naar json en deze als content doorsturen.
-            var json = JsonConvert.SerializeObject(eventContent);  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(messagetopic, eventType, json, componentId, componentName, eventFormat);
+            var eventMessage = EventMessageBuilder.Build(eventType, eventContent, eventFormat, componentId, componentName);
 
         }
 
@@ -55,8 +54,8 @@ namespace Digipolis.Toolbox.Eventhandler
 
         public void PublishString(string messagetopic, string eventType, string eventContent, string componentId, string componentName, string eventFormat = null)
         {
-            var json = JsonConvert.SerializeObject(new { content = eventContent });  //TODO Correcte serialisatie via anonymous type???
-            PublishJson(messagetopic, eventType, json, componentId, componentName, eventFormat);
+             //TODO Correcte serialisatie via anonymous type???
+            PublishJson(messagetopic, eventType, eventContent, componentId, componentName, eventFormat);
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Digipolis.Toolbox.Eventhandler
         }
 
 
-        private void PublishToEndpoint(string messagetopic, EventMessage eventmessage)
+        private void PublishToEndpoint<T>(string messagetopic, EventMessage<T> eventmessage)
         {
             //TODO: logic to create topics???
             try
